@@ -5,23 +5,26 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
+
 User = get_user_model()
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
 
     model = User
+    template_name = 'users/user_detail.html'
     slug_field = "username"
     slug_url_kwarg = "username"
 
 
-user_detail_view = UserDetailView.as_view()
+
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     model = User
-    fields = ["name"]
+    fields = ["nick_name", "picture", "title", "brief", "city", "link", "wb_link", "zh_link", "github_link"]
+    template_name = 'users/user_form.html'
 
     def get_success_url(self):
         return reverse("users:detail", kwargs={"username": self.request.user.username})
@@ -33,18 +36,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         messages.add_message(
             self.request, messages.INFO, _("Infos successfully updated")
         )
-        return super().form_valid(form)
+        return super(UserUpdateView, self).form_valid(form)
 
 
-user_update_view = UserUpdateView.as_view()
 
-
-class UserRedirectView(LoginRequiredMixin, RedirectView):
-
-    permanent = False
-
-    def get_redirect_url(self):
-        return reverse("users:detail", kwargs={"username": self.request.user.username})
-
-
-user_redirect_view = UserRedirectView.as_view()

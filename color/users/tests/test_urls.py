@@ -1,23 +1,22 @@
-import pytest
-from django.conf import settings
-from django.urls import reverse, resolve
+from test_plus.test import TestCase
+from django.urls import resolve, reverse
 
-pytestmark = pytest.mark.django_db
+class TestUserUrls(TestCase):
+    '''路由测试'''
 
+    def setUp(self):
+        self.user = self.make_user()
 
-def test_detail(user: settings.AUTH_USER_MODEL):
-    assert (
-        reverse("users:detail", kwargs={"username": user.username})
-        == f"/users/{user.username}/"
-    )
-    assert resolve(f"/users/{user.username}/").view_name == "users:detail"
+    def test_update_reverse(self):
+        '''update路由反向解析'''
+        self.assertEqual(self.reverse('users:update'), '/users/update/')
 
+    def test_update_resolve(self):
+        '''update路由正向解析'''
+        self.assertEqual(resolve('/users/update/').view_name, 'users:update')
 
-def test_update():
-    assert reverse("users:update") == "/users/~update/"
-    assert resolve("/users/~update/").view_name == "users:update"
+    def test_detail_reverse(self):
+        self.assertEqual(reverse('users:detail', kwargs={"username":self.user.username}),'/users/testuser/' )
 
-
-def test_redirect():
-    assert reverse("users:redirect") == "/users/~redirect/"
-    assert resolve("/users/~redirect/").view_name == "users:redirect"
+    def test_detail_resolve(self):
+        self.assertEqual(resolve('/users/testuser/').view_name, 'users:detail')

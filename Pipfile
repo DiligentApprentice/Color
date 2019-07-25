@@ -37,6 +37,8 @@ django-extensions = "==2.1.9"
 django-coverage-plugin = "==1.6.0"
 pytest-django = "==3.5.1"
 Django = "==2.1.7"
+django-compressor = "*"
+django-test-plus = "*"
 
 [requires]
 python_version = "3.7"

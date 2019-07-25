@@ -4,6 +4,7 @@ Base settings to build other settings files upon.
 
 import environ
 
+
 ROOT_DIR = (
     environ.Path(__file__) - 3
 )  # (color/config/settings/base.py - 3 = color/)
@@ -45,7 +46,7 @@ LOCALE_PATHS = [ROOT_DIR.path("locale")]
 DATABASES = {
     "default": env.db("DATABASE_URL")
 }
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES["default"]["ATOMIC_REQUESTS"] = True #自动对http请求封装成事物
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -71,10 +72,14 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "rest_framework",
+    "compressor",#压缩
+    "sorl.thumbnail", #对图片进行优化
+    "allauth.socialaccount.providers.github" #第三方认证
 ]
 
 LOCAL_APPS = [
     "color.users.apps.UsersConfig",
+    "news"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -92,10 +97,12 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "account_logout"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
 
@@ -132,6 +139,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 # STATIC
 # ------------------------------------------------------------------------------
@@ -256,5 +264,11 @@ ACCOUNT_ADAPTER = "color.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "color.users.adapters.SocialAccountAdapter"
 
 
-# Your stuff...
-# ------------------------------------------------------------------------------
+#django-compress
+#----------------------------------------------------------------
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)

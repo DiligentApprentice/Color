@@ -1,9 +1,8 @@
-{% extends "base.html" %}
-
-{% block title %}Forbidden (403){% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>Forbidden (403)</h1>
-
-<p>CSRF verification failed. Request aborted.</p>
+    <div class="page-header">
+        <h1>权限错误</h1>
+    </div>
+    <p style="margin-top: 1.2em">您没有访问此页面的权限</p>
 {% endblock content %}

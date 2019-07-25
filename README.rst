@@ -74,5 +74,7 @@ Deployment
 The following details how to deploy this application.
 
 
+#注册用户
 
+pythoner admin12345
 
