@@ -1,7 +1,7 @@
 {% load static humanize thumbnail %}
 
 {% for reply in thread %}
-    <li class="card" news-id="{{ reply.uuid_id }}">
+    <li class="card" news-id="{{ reply.id}}">
         <div class="card-body">
             <div class="profile-picture">
                 {% thumbnail reply.user.picture "x50" as im %}
@@ -12,13 +12,14 @@
             </div>
             <div class="post">
                 {% if request.user.username == reply.user.username %}
-                    <a href="{% url 'news:delete_news' reply.pk %}">
+                    <!-- 删除动态-->
+                    <a href="#">
                         <i class="fa fa-times pull-right" aria-hidden="true" title="点击删除这条动态"></i>
                     </a>
                 {% endif %}
                 <p>
                     <strong>
-                        <a href="{% url 'users:detail' reply.user.username %}">{{ reply.user.get_profile_name }}</a>
+                        <a href="{% url 'users:detail' reply.user.username %}">{{ reply.user.get_nick_name }}</a>
                     </strong>
                 </p>
                 <p>{{ reply }}</p>
@@ -31,10 +32,10 @@
                 {% else %}
                     <i class="heart fa fa-heart-o" aria-hidden="true"></i>
                 {% endif %}
-                <span class="like-count">{{ news.count_likers }}</span>
+                <span class="like-count">{{ news.total_like_num }}</span>
             </a>
             <a href="#" class="comment"><i class="fa fa-comment-o" aria-hidden="true"></i>
-                <span class="comment-count">{{ news.comment_count }}</span>
+                <span class="comment-count">{{ news.total_comment_num }}</span>
             </a>
             <span class="timestamp">{{ reply.created_at|naturaltime }}</span>
         </div>

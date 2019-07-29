@@ -1,6 +1,6 @@
 {% load static humanize thumbnail %}
 
-<li class="infinite-item card" news-id="{{ news.uuid_id }}">
+<li class="infinite-item card" news-id="{{ news.id }}">
     <div class="card-body">
         <div class="profile-picture">
             {% thumbnail news.user.picture "x50" as im %}
@@ -13,13 +13,14 @@
         <div class="post">
             <!--自己发送的动态显示删除按钮-->
             {% if request.user.username == news.user.username %}
-                <a href="{% url 'news:delete_news' news.pk %}">
+                <!-- 删除按钮-->
+                <a href="{% url 'news:delete_news' news.id %}">
                     <i class="fa fa-times pull-right" aria-hidden="true" title="点击删除这条动态"></i>
                 </a>
             {% endif %}
             <p>
                 <strong>
-                    <a href="{% url 'users:detail' news.user.username %}">{{ news.user.get_profile_name }}</a>
+                    <a href="{% url 'users:detail' news.user.username %}">{{ news.user.get_nick_name }}</a>
                 </strong>
             </p>
             <p>{{ news }}</p>
@@ -32,10 +33,10 @@
             {% else %}
                 <i class="heart fa fa-heart-o" aria-hidden="true"></i>
             {% endif %}
-            <span class="like-count">{{ news.count_likers }}</span>
+            <span class="like-count">{{ news.total_like_num }}</span>
         </a>
         <a href="#" class="comment"><i class="fa fa-comment-o" aria-hidden="true"></i>
-            <span class="comment-count">{{ news.comment_count }}</span>
+            <span class="comment-count">{{ news.total_comment_num }}</span>
         </a>
         <span class="timestamp">{{ news.created_at|naturaltime }}</span>
     </div>

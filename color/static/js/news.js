@@ -49,7 +49,7 @@ $(function () {
     });
 
     $("input, textarea").attr("autocomplete", "off");
-
+    //发送动态
     $("#postNews").click(function () {
         // Ajax call after pushing button, to register a News object.
         $.ajax({
@@ -70,13 +70,15 @@ $(function () {
     });
 
     $("#replyNews").click(function () {
-        // Ajax call to register a reply to any given News object.
+        // 发送评论
         $.ajax({
             url: '/news/post-comment/',
             data: $("#replyNewsForm").serialize(),
             type: 'POST',
             cache: false,
             success: function (data) {
+                $(".comment-count .current").text(data.comments);
+                $(".comment-count .current").removeClass('current');
                 $("#replyInput").val("");
                 $("#newsThreadModal").modal("hide");
             },
@@ -94,6 +96,7 @@ $(function () {
             'news': news,
             'csrf_token': csrftoken
         };
+        //前端发送点赞请求
         $.ajax({
             url: '/news/like/',
             data: payload,
@@ -116,6 +119,7 @@ $(function () {
     $("ul.stream").on("click", ".comment", function () {
         // Ajax call to request a given News object detail and thread, and to
         // show it in a modal.
+        $(this).find('.comment-count').addClass('current');
         var post = $(this).closest(".card");
         var news = $(post).closest("li").attr("news-id");
         $("#newsThreadModal").modal("show");
@@ -127,7 +131,7 @@ $(function () {
                 $("#threadContent").html("<li class='loadcomment'><img alt='加载中...' src='/static/img/loading.gif'></li>");
             },
             success: function (data) {
-                $("input[name=parent]").val(data.uuid);
+                $("#postComment").val(data.id);
                 $("#newsContent").html(data.news);
                 $("#threadContent").html(data.thread);
             }

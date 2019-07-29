@@ -10,7 +10,7 @@ class News(models.Model):
 
     user = models.ForeignKey(User, verbose_name='用户',related_name='news', on_delete=models.CASCADE,blank=True, null=True)
     content = models.TextField(verbose_name='动态内容', null=True, blank=True)
-    liker = models.ManyToManyField(User, verbose_name='点赞用户',on_delete=models.CASCADE,related_name='liker',blank=True, null=True )
+    liker = models.ManyToManyField(User, verbose_name='点赞用户', related_name='likers',blank=True )
     parent = models.ForeignKey('self', verbose_name='关联动态',on_delete=models.CASCADE, related_name='comment',blank=True,null=True)
     reply = models.BooleanField(verbose_name='是否为评论', default=False)
     created_at = models.DateTimeField(default=datetime.datetime.now(), verbose_name='创建时间')
@@ -23,27 +23,28 @@ class News(models.Model):
     def __str__(self):
         return self.content
 
-    def publish(self, user, content):
-        '''用户发表动态'''
-        self.user = user
-        self.content = content
-        self.save()
+    def like_or_cancle(self, user):
+        '''用户取消或者点赞'''
+        if user in self.liker.all():
+            self.liker.remove(user)
+        else:
+            self.liker.add(user)
 
-    def like(self,liker):
-        '''用户点赞'''
-        pass
+    def total_like_num(self):
+        '''动态点赞数统计'''
+        return self.liker.all().count()
 
-    def cancel_like(self):
-        '''用户取消赞'''
-        pass
+    def total_comment_num(self):
+        '''动态评论数统计'''
+        return self.comment.all().count()
 
-    def comment(self, content, user):
-        '''用户评论'''
-        self.parent =self
-        self.content = content
-        self.reply = True
-        self.user = user
-        self.save()
+    def get_likers(self):
+        '''获取所有点赞对象'''
+        return self.liker.all()
+
+    def get_all_relation_comments(self):
+        '''动态所有评论对象'''
+        return self.comment.all()
 
 
 

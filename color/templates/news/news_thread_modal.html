@@ -10,7 +10,7 @@
                     <li class="card">
                         <form id="replyNewsForm" role="form" method="post" action="#" onsubmit="return false">
                             {% csrf_token %}
-                            <input type="hidden" name="parent" value="">
+                            <input type="hidden" id="postComment" name="parent" >
                             <div class="form-group">
                                 <label for="replyInput"></label>
                                 <textarea id="replyInput" name="reply" rows="5" class="form-control"></textarea>
