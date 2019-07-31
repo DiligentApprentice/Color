@@ -2,7 +2,7 @@ from test_plus.test import TestCase
 
 from news.models import News
 
-class TestUser(TestCase):
+class TestNews(TestCase):
     '''首页动态测试'''
 
     def setUp(self):

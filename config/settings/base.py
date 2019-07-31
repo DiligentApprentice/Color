@@ -65,6 +65,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize", # 将模板标签友好展示
+    "django.forms", #用来重写djangform中widget字段的模板
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -74,12 +75,16 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "compressor",#压缩
     "sorl.thumbnail", #对图片进行优化
-    "allauth.socialaccount.providers.github" #第三方认证
+    "allauth.socialaccount.providers.github" ,#第三方认证
+    "markdownx",
+    "taggit",
+    "django_comments",
 ]
 
 LOCAL_APPS = [
     "color.users.apps.UsersConfig",
-    "news"
+    "news",
+    "articles",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -272,3 +277,7 @@ STATICFILES_FINDERS = (
     # other finders..
     'compressor.finders.CompressorFinder',
 )
+
+#修改from的widget中textarea的默认模板
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+

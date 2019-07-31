@@ -4,12 +4,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from django.conf.urls import url, include
+from markdownx import urls as markdownx
 
 urlpatterns = [
 
     path("users/", include("color.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("news/", include("news.urls", namespace="news"))
+    path("news/", include("news.urls", namespace="news")),
+    path("articles/", include("articles.urls", namespace='articles')),
+    path('markdownx/', include('markdownx.urls')),
+    url(r'^comments/', include('django_comments.urls'))
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

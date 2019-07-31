@@ -1,6 +1,7 @@
 $(function () {
     $(".publish").click(function () {
-        $("input[name='status']").val("P");
+        var article_url =  "/articles/create-article/";
+        $("#article-form").attr('action', article_url);
         $("#article-form").submit();
     });
 
@@ -12,7 +13,8 @@ $(function () {
     });
 
     $(".draft").click(function () {
-        $("input[name='status']").val("D");
+        var draft_url = "/articles/create-draft/";
+        $("#article-form").attr('action', draft_url);
         $("#article-form").submit();
     });
 });

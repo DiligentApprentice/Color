@@ -10,7 +10,7 @@
             <li class="breadcrumb-item active" aria-current="page">写文章</li>
         </ol>
     </nav>
-    <form action="{% url 'articles:write_new' %}" enctype="multipart/form-data" id="article-form" method="post" role="form">
+    <form  enctype="multipart/form-data" id="article-form" method="post" role="form">
         {% csrf_token %}
         {{ form|crispy }}
         <div class="form-group">
