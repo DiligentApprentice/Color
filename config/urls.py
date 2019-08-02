@@ -14,7 +14,8 @@ urlpatterns = [
     path("news/", include("news.urls", namespace="news")),
     path("articles/", include("articles.urls", namespace='articles')),
     path('markdownx/', include('markdownx.urls')),
-    url(r'^comments/', include('django_comments.urls'))
+    url(r'^comments/', include('django_comments.urls')),
+    path("qa/", include('qa.urls', namespace='qa'))
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

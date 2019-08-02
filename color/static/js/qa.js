@@ -39,14 +39,14 @@ $(function () {
     $("#publish").click(function () {
         // function to operate the Publish button in the question form, marking
         // the question status as published.
-        $("input[name='status']").val("O");
+        $("input[name='q_type']").val(1);
         $("#question-form").submit();
     });
 
     $("#draft").click(function () {
         // Function to operate the Draft button in the question form, marking
         // the question status as draft.
-        $("input[name='status']").val("D");
+        $("input[name='q_type']").val(2);
         $("#question-form").submit();
     });
 

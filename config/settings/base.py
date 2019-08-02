@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "color.users.apps.UsersConfig",
     "news",
     "articles",
+    "qa",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
