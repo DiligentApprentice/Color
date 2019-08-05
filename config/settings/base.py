@@ -68,6 +68,7 @@ DJANGO_APPS = [
     "django.forms", #用来重写djangform中widget字段的模板
 ]
 THIRD_PARTY_APPS = [
+    "channels",
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -79,6 +80,7 @@ THIRD_PARTY_APPS = [
     "markdownx",
     "taggit",
     "django_comments",
+
 ]
 
 LOCAL_APPS = [
@@ -86,6 +88,7 @@ LOCAL_APPS = [
     "news",
     "articles",
     "qa",
+    "chat",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -282,3 +285,15 @@ STATICFILES_FINDERS = (
 #修改from的widget中textarea的默认模板
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
+#django-channel初始化
+ASGI_APPLICATION = "config.routing.application"
+
+#配置django-chanel频道层
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [f'{env("REDIS_URL", default="redis://127.0.0.1:6379")}/3'],
+        },
+    },
+}

@@ -10,19 +10,20 @@
 {% block content %}
 
     <div class="page-header">
-        <h4>{{ request.user.get_profile_name }}的聊天记录</h4>
+        <h4>{{ request.user.get_nick_name }}的聊天记录</h4>
     </div>
     <div class="row">
         <div class="col-md-3">
             {% for user in users_list %}
-                <a href="{% url 'messager:conversation_detail' user.username %}"
+                <!-- 和指定用户私信的url-->
+                <a href="{% url 'chat:single' user.username %}"
                    class="list-group-item list-group-item-action {% if active == user.username %}active{% endif %}">
                     {% thumbnail user.picture "x45" as im %}
                         <img src="{{ im.url }}" alt="用户头像">
                     {% empty %}
                         <img src="{% static 'img/user.png' %}" height="45px" alt="没有头像"/>
                     {% endthumbnail %}
-                    {{ user.get_profile_name }}
+                    {{ user.get_nick_name }}
                 </a>
             {% endfor %}
         </div>
@@ -39,11 +40,14 @@
             </div>
             <hr>
             <div class="chat-box">
-                <form role="form" method="post" action="#" id="send">
+                <form role="form" method="post" action="#" id="send" >
                     <div class="form-group">
                         {% csrf_token %}
                         <input type="hidden" name="to" value="{{ active }}">
-                        <input class="form-control" type="text" name="message" placeholder="发送消息" autocomplete="off">
+                        <div class="form-group">
+                            <input class="form-control messages-box" style="{width: 80%}"  type="text" name="message" placeholder="发送消息" autocomplete="off">
+                            <button id="submit" class="btn btn-info " style="margin-left: 521px;margin-top: -66px" >发送</button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -16,6 +16,27 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     slug_field = "username"
     slug_url_kwarg = "username"
 
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        user = User.objects.get(username=self.request.user.username)
+        context["news_num"] = user.news.filter(reply=False).all().count()
+        context["article_num"] = user.articles.filter(article_type=2).all().count()
+        context["comment_num"] = user.comment_comments.all().count()
+        context["question_num"] = user.questions.all().count()
+        context["answer_num"] = user.answers.all().count()
+        #互动数
+        message_user_set = set()
+        recipient_list = user.m_sender.all()
+        for recipient in recipient_list:
+            message_user_set.add(recipient.recipient)
+        sneder_list = user.m_recipient.all()
+        for sender in recipient_list:
+            message_user_set.add(sender.sender)
+
+        context["interaction_num"] =user.likers.all().count()+user.voters.all().count()+ \
+                                    user.comment_comments.all().count()+len(message_user_set)
+        return context
+
 
 
 
