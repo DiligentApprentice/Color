@@ -10,27 +10,29 @@
 {% block content %}
     <h4>
         {{ request.user.get_profile_name }}的未读通知列表
-        <a class="btn btn-dark pull-right" href="{% url 'notifications:mark_all_read' %}">全部标为已读</a>
+        <!--全部标记为已读-->
+        <a class="btn btn-dark pull-right" href="#{% url 'notification:all_read' %}">全部标为已读</a>
     </h4>
     <ul class="notifications">
         {% for notification in notification_list %}
             <li class="notification">
                 <div class="media">
                     <div class="media-object">
-                        {% thumbnail notification.actor.picture "x75" as im %}
+                        {% thumbnail notification.trigger.picture "x75" as im %}
                             <img src="{{ im.url }}" style="border-radius: 50%;" alt="用户头像" id="pic">
                         {% empty %}
                             <img src="{% static 'img/user.png' %}" height="75px" alt="没有头像"/>
                         {% endthumbnail %}
                     </div>
                     <div class="media-body">
-                        <a class="btn btn-success btn-sm pull-right" title="标为已读" href="{% url 'notifications:mark_as_read' notification.slug %}">
+                        <!-- 单条通知标记为已读-->
+                        <a class="btn btn-success btn-sm pull-right" title="标为已读" href="{% url 'notification:single_read' notification.id %}">
                             <i class="fa fa-check-circle"></i></a>
                         <strong class="notification-title">
-                            <a href="{% url 'users:detail' notification.actor.username %}">{{ notification.actor.get_profile_name }}</a>
+                            <a href="{% url 'users:detail' notification.trigger.username %}">{{ notification.trigger.get_nick_name }}</a>
                         </strong>
                         <p class="notification-desc">
-                            {{ notification.get_verb_display }}
+                            {{ notification.get_action_display }}
                             {% if notification.action_object %}
                                 {{ notification.action_object }}
                             {% endif %}

@@ -11,12 +11,15 @@ urlpatterns = [
 
     path("users/", include("color.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("news/", include("news.urls", namespace="news")),
-    path("articles/", include("articles.urls", namespace='articles')),
+    path("news/", include("color.news.urls", namespace="news")),
+    path("articles/", include("color.articles.urls", namespace='articles')),
     path('markdownx/', include('markdownx.urls')),
     url(r'^comments/', include('django_comments.urls')),
-    path("qa/", include('qa.urls', namespace='qa')),
-    path("chat/", include('chat.urls', namespace='chat'))
+    path("qa/", include('color.qa.urls', namespace='qa')),
+    path("chat/", include('color.chat.urls', namespace='chat')),
+    path("notification/", include('color.notification.urls', namespace='notification')),
+    url(r'^search/', include('haystack.urls'))
+
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

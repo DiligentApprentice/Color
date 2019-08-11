@@ -80,15 +80,20 @@ THIRD_PARTY_APPS = [
     "markdownx",
     "taggit",
     "django_comments",
+    "haystack",
+    "djcelery_email",
+
 
 ]
 
 LOCAL_APPS = [
     "color.users.apps.UsersConfig",
-    "news",
-    "articles",
-    "qa",
-    "chat",
+    "color.news.apps.NewsConfig",
+    "color.articles.apps.ArticlesConfig",
+    "color.qa.apps.QaConfig",
+    "color.chat.apps.ChatConfig",
+    "color.notification.apps.NotificationConfig",
+    "color.search.apps.SearchConfig"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -114,7 +119,8 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = "news:list"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
-
+#用户注销后跳转url
+ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 # PASSWORDS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
@@ -297,3 +303,38 @@ CHANNEL_LAYERS = {
         },
     },
 }
+#haystack 服务端引擎
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch2_backend.Elasticsearch2SearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'color',
+    },
+}
+
+#搜索结果分页
+HAYSTACK_SEARCH_RESULTS_PER_PAG=20
+#当mysql修改了数据后，elastic自动重建索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+#Celery 配置
+INSTALLED_APPS += ['color.taskapp.celery.CeleryAppConfig']
+if USE_TZ:
+    # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-timezone
+    CELERY_TIMEZONE = TIME_ZONE
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-broker_url
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_backend
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-accept_content
+CELERY_ACCEPT_CONTENT = ['json', 'msgpack']  # 指定接受的内容类型
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-task_serializer
+CELERY_TASK_SERIALIZER = 'msgpack'  # 任务序列化和反序列化使用msgpack，msgpack是一个二进制的json序列化方案，比json数据结构更小，更快
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_serializer
+CELERY_RESULT_SERIALIZER = 'json'  # 读取任务结果一般性能要求不高，所以使用了可读性更好的json
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-time-limit
+# TODO: set to whatever value is adequate in your circumstances
+CELERYD_TASK_TIME_LIMIT = 5 * 60  # 单个任务的最大运行时间5分钟
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-soft-time-limit
+# TODO: set to whatever value is adequate in your circumstances
+CELERYD_TASK_SOFT_TIME_LIMIT = 60  # 任务的软时间限制，超时候SoftTimeLimitExceeded异常将会被抛出

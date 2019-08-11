@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 
-from qa.models import Question, Answer
+from color.qa.models import Question, Answer
 class QuestionForm(ModelForm):
 
     q_type = forms.IntegerField(widget=forms.HiddenInput())

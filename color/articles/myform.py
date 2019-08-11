@@ -4,7 +4,7 @@ from django.forms.widgets import HiddenInput
 
 from markdownx.fields import MarkdownxFormField
 
-from articles.models import Articles
+from color.articles.models import Articles
 
 class ArticleForm(ModelForm):
     '''文章Form'''

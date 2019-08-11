@@ -1,8 +1,8 @@
 from test_plus.test import CBVTestCase
 from django.test import RequestFactory
 
-from qa.models import Question, Answer, Vote
-from qa import views
+from color.qa.models import Question, Answer, Vote
+from color.qa import views
 class BaseQATestCase(CBVTestCase):
 
     def setUp(self):

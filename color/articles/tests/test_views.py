@@ -5,7 +5,7 @@ from PIL import Image
 from django.test.client import Client
 from django.urls import reverse
 
-from articles.models import Articles
+from color.articles.models import Articles
 
 class TestArticleView(TestCase):
     '''文章view测试用例'''

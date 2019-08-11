@@ -35,11 +35,11 @@ class ModelManeger(models.Manager):
 
     def get_has_answer_questions(self):
         '''已经有回答的问题'''
-        return self.filter(answers__content__isnull=False).all()
+        return self.filter(answers__content__isnull=False).select_related('user')
 
     def get_null_answer_questions(self):
         '''未被回答的问题'''
-        return self.filter(answers__content__isnull=True).all()
+        return self.filter(answers__content__isnull=True).select_related('user')
 
     def total_tag_num(self):
         tag_dict = {}
@@ -87,20 +87,20 @@ class Question(models.Model):
         return markdownify(self.content)
 
     def get_answer_num(self):
-        return Answer.objects.filter(questions=self).count()
+        return Answer.objects.select_related('questions', 'user').filter(questions=self).count()
 
     def get_all_answers(self):
-        return Answer.objects.filter(questions=self).all()
+        return Answer.objects.select_related('questions', 'user').filter(questions=self).all()
 
     def get_vote_number(self):
         '''获取投票数'''
         return Vote.objects.filter(question__id =self.id, value=True).count() - Vote.objects.filter(question__id =self.id, value=False).count()
 
     def get_upvoters(self):
-        return [vote.user for vote in  Vote.objects.filter(question__id=self.id, value=True)]
+        return [vote.user for vote in  Vote.objects.select_related(question__id=self.id, value=True)]
 
     def get_downvoters(self):
-        return [vote.user for vote in  Vote.objects.filter(question__id=self.id, value=False)]
+        return [vote.user for vote in  Vote.objects.select_related(question__id=self.id, value=False)]
 
 
 class Answer(models.Model):

@@ -3,9 +3,13 @@ from django.views.generic import ListView, DeleteView, DetailView, CreateView, U
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.urls import reverse
+from django_comments.signals import comment_was_posted
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
-from articles.models import Articles
-from articles.myform import ArticleForm
+from color.notification.views import notification_handler
+from color.articles.models import Articles
+from color.articles.myform import ArticleForm
 # Create your views here.
 
 class ArticleListView(LoginRequiredMixin,ListView ):
@@ -111,3 +115,12 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.is_edit = True
         return super(ArticleUpdateView, self).form_valid(form)
 
+
+def notify_comment(**kwargs):
+    user = kwargs['request'].user
+    action_obj = kwargs['comment'].content_object
+    recipient = action_obj.user
+    notification_handler(trigger=user, recipient=recipient, action='C', action_obj=action_obj)
+
+
+comment_was_posted.connect(receiver=notify_comment)

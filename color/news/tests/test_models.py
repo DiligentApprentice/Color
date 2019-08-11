@@ -1,6 +1,6 @@
 from test_plus.test import TestCase
 
-from news.models import News
+from color.news.models import News
 
 class TestNews(TestCase):
     '''首页动态测试'''

@@ -1,6 +1,6 @@
 from test_plus.test import TestCase
 
-from chat.models import Message
+from color.chat.models import Message
 
 class TestMessage(TestCase):
 

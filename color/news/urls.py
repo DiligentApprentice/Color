@@ -1,7 +1,7 @@
 from django.urls import include, path
 
-from news.views import NewsListView
-from news import views
+from color.news.views import NewsListView
+from color.news import views
 
 
 app_name = "news"
@@ -12,6 +12,7 @@ urlpatterns = [
     path('get-thread/',views.get_relation_comments, name="comments"),
     path('post-comment/', views.post_comment, name="post_comment"),
     path('delete/<pk>/', views.NewsDeleteVieww.as_view(), name="delete_news"),
+    path('interaction/', views.dynamic_update, name='dynamic_update')
 ]
 
 

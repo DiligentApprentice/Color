@@ -1,6 +1,6 @@
 from test_plus.test import TestCase
 
-from qa.models import Question, Answer, Vote
+from color.qa.models import Question, Answer, Vote
 
 class TestQAmodels(TestCase):
 

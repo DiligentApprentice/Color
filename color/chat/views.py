@@ -6,12 +6,12 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from common import ajax_required
+from color.common import ajax_required
 from channels.layers import get_channel_layer
 from django.template.loader import render_to_string
 from asgiref.sync import async_to_sync
 
-from chat.models import Message
+from color.chat.models import Message
 
 User = get_user_model()
 

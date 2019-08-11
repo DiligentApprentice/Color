@@ -1,6 +1,6 @@
 from test_plus.test import TestCase
 
-from articles.models import Articles
+from color.articles.models import Articles
 
 class TestArticles(TestCase):
     '''文章model测试'''

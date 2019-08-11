@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from channels.layers import get_channel_layer
+from asgiref.sync import  async_to_sync
+from color.notification.views import notification_handler
 
 import datetime
 
@@ -29,6 +32,8 @@ class News(models.Model):
             self.liker.remove(user)
         else:
             self.liker.add(user)
+            notification_handler(trigger=user, recipient=self.user, action_obj=self, action='L',
+                                 id=self.id, key="news_update")
 
     def total_like_num(self):
         '''动态点赞数统计'''
@@ -36,7 +41,7 @@ class News(models.Model):
 
     def total_comment_num(self):
         '''动态评论数统计'''
-        return self.comment.all().count()
+        return self.get_all_relation_comments().count()
 
     def get_likers(self):
         '''获取所有点赞对象'''
@@ -44,7 +49,20 @@ class News(models.Model):
 
     def get_all_relation_comments(self):
         '''动态所有评论对象'''
-        return self.comment.all()
+        return self.comment.filter(reply=True).select_related('user').all()
+
+    def save(self, *args, **kwargs):
+        '''默认在创建new时，将消息发送通知'''
+        super(News, self).save(*args, **kwargs)
+        if not self.reply:
+            channel_layer = get_channel_layer()
+            payload ={
+                "type":'receive',
+                "key":"add_news",
+                "trigger":self.user.username
+            }
+            async_to_sync(channel_layer.group_send)('notification', payload)
+
 
 
 

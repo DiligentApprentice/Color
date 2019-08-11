@@ -8,9 +8,10 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 
-from qa.models import Question, Answer, Vote
-from qa.myform import QuestionForm, AnswerForm
-from common import ajax_required
+from color.qa.models import Question, Answer, Vote
+from color.qa.myform import QuestionForm, AnswerForm
+from color.common import ajax_required
+from color.notification.views import notification_handler
 
 class QAListView(LoginRequiredMixin, ListView):
     '''问答列表视图'''
@@ -160,11 +161,13 @@ def post_answer_vote(request):
 @ajax_required
 @require_http_methods('["POST"]')
 def post_accept_answer(request):
+    '''回答被采纳'''
     a_id = request.POST.get('answer')
     a_obj = Answer.objects.get(id= a_id)
     if request.user.username != a_obj.questions.user.username:
         raise PermissionDenied
     a_obj.accept_answers()
+    notification_handler(trigger=request.user, recipient=a_obj.user, action='T', action_obj=a_obj)
     return JsonResponse({"status":'success'},status=200)
 
 

@@ -1,6 +1,6 @@
 from test_plus.test import TestCase, RequestFactory
 
-from users.views import UserUpdateView
+from color.users.views import UserUpdateView
 
 class TestBase(TestCase):
     '''测试基类'''

@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from chat import views
+from color.chat import views
 
 
 app_name = "chat"

@@ -8,9 +8,9 @@
         </span>
             <p>{{ notification }}&nbsp;{{ notification.created_at|naturaltime }}</p>
         {% endfor %}
-        <a type="button" class="btn-sm btn-dark text-center" href="{% url 'notifications:unread' %}">查看所有</a>
+        <a type="button" class="btn-sm btn-dark text-center" href="{% url 'notification:list' %}">查看所有</a>
         <a type="button" class="btn-sm btn-dark text-center"
-           href="{% url 'notifications:mark_all_read' %}">全部标为已读</a>
+           href="{% url 'notification:all_read' %}">全部标为已读</a>
     {% else %}
         <li class="text-center">没有未读通知</li>
     {% endif %}

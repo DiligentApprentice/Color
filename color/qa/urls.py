@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from qa import views
+from color.qa import views
 
 
 

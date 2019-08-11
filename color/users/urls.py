@@ -1,5 +1,5 @@
 from django.urls import path
-from users import views
+from color.users import views
 
 app_name = "users"
 urlpatterns = [

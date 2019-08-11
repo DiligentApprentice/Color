@@ -26,7 +26,7 @@ $(function () {
 
     // WebSocket连接
     var ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";  // 使用wss(https)或者ws(http)
-    var ws_path = ws_scheme + '://' + window.location.host +  "/ws/"+ currentUser + "/";
+    var ws_path = ws_scheme + '://' + window.location.host +  "/ws/"+"message/"+ currentUser + "/";
     var websocket = new ReconnectingWebSocket(ws_path)
     websocket.onmessage = function(event){
         const data = JSON.parse(event.data)

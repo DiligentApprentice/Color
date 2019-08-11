@@ -1,7 +1,7 @@
 from test_plus.test import TestCase
 from django.urls import resolve, reverse
 
-from news.models import News
+from color.news.models import News
 
 class TestUrls(TestCase):
 

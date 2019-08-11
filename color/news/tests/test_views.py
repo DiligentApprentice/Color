@@ -2,8 +2,8 @@ from test_plus.test import TestCase, RequestFactory
 from django.test import Client
 from django.urls import reverse
 
-from news.views import NewsListView, NewsDeleteVieww
-from news.models import News
+from color.news.views import NewsListView, NewsDeleteVieww
+from color.news.models import News
 
 
 #重写学模拟浏览器发请求，验证验证视图类或者视图函数的返回结果

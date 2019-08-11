@@ -77,7 +77,7 @@ $(function () {
             type: 'POST',
             cache: false,
             success: function (data) {
-                $(".comment-count .current").text(data.comments);
+                $(".comment-count").text(data.comments);
                 $(".comment-count .current").removeClass('current');
                 $("#replyInput").val("");
                 $("#newsThreadModal").modal("hide");
